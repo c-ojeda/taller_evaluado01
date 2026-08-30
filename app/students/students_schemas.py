@@ -30,3 +30,21 @@ class UpdateStudentDto(BaseModel):
     )
     email: EmailStr | None = None
     age: int | None = Field(default=None, ge=18, le=99)
+from pydantic import BaseModel, Field
+from typing import Optional, Any
+
+class StudentCreate(BaseModel):
+    name: str = Field(..., description="Nombre del estudiante")
+    email: str = Field(..., description="Correo institucional")
+    age: int = Field(..., description="Edad del estudiante")
+
+class StudentUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    age: Optional[int] = None
+
+class APIResponse(BaseModel):
+    success: bool
+    statusCode: int
+    message: str
+    data: Optional[Any] = None

@@ -27,52 +27,27 @@ Cada estudiante tiene `id` (UUID), `name`, `email`, `age`, `createdAt` y `update
 
 Cada mascota tiene `id` (UUID), `studentId`, `name`, `species`, `age` (opcional), `createdAt` y `updatedAt`. Solo puede operar sobre su estudiante dueño.
 
-Las respuestas devuelven los datos crudos, sin envoltorios. Los errores de validación usan el formato nativo de FastAPI (`422`) y las excepciones HTTP los códigos estándar (`404`, `409`).
+## Estándar de Respuestas API
 
-## Contexto técnico
+Todas las respuestas de la API están estandarizadas para mantener una estructura consistente en caso de éxito o error.
 
-- **Backend**: FastAPI
-- **Almacenamiento**: en memoria (sin persistencia)
-- **Validación**: Pydantic v2
-- **Gestor de dependencias**: uv
-- **Documentación**: Swagger en `/docs`
+### Respuesta Exitosa (`2xx`)
 
-## Ejecución local
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "data": { ... }
+}
 
-1. Instalar dependencias:
+##Respuesta de Error (`4xx / 5xx`)
 
-    ```bash
-    make install
-    ```
-
-    O directamente con uv:
-
-    ```bash
-    uv sync
-    ```
-
-2. Levantar el servidor en modo desarrollo:
-
-    ```bash
-    make dev
-    ```
-
-    O usando uv:
-
-    ```bash
-    uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 3000
-    ```
-
-La aplicación queda disponible en:
-
-- `http://localhost:3000`
-- `http://localhost:3000/docs`
-
-## Comandos útiles
-
-- `make install` — sincroniza dependencias con uv
-- `make dev` — arranca uvicorn en modo reload
-- `make lint` — ejecuta Ruff (con autocorrección)
-- `make format` — formatea el código con Ruff
-- `make format-check` — verifica el formato
-- `make clean` — elimina `.venv`, cachés y artefactos
+```json
+{
+  "success": false,
+  "statusCode": 400,
+  "message": "Mensaje descriptivo del error",
+  "route": "/api/v1/endpoint",
+  "keys": ["campoAfectado"],
+  "data": null
+}
